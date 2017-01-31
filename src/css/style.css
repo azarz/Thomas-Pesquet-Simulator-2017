@@ -13,3 +13,10 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#latlontxt {
+    position: absolute;
+	z-index: 500;
+	top: 0%;
+	left: 50%;
+}

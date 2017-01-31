@@ -10,13 +10,43 @@ body {
 
 #container {
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
 
-#latlontxt {
+#mapid{
+    width: 100%; 
+    height: 100%;
+}
+
+#latlondiv {
+    z-index: 500;
     position: absolute;
-	z-index: 500;
-	top: 0%;
-	left: 50%;
+    top: 1%;
+    width: 100%;
+    text-align: center;
+}
+
+#latlonspan{
+    display: inline-block;
+    font-family: Verdana;
+    padding: 8px;
+    background-color: rgba(155,200,75,0.8);
+    border-radius: 8px;
+}
+
+#latlonspan p{
+    padding: 0;
+    margin: 1px;
+}
+
+#btnSuivi {
+    z-index: 500;
+    position: absolute;
+    top: 1%;
+    right: 0.5%;
+    padding: 5px;
+    background-color: rgba(155,200,75,0.8);
+    border-radius: 8px;
 }

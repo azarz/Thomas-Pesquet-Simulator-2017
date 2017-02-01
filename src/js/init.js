@@ -16,7 +16,7 @@ var issIcon = L.icon({
 
 function init() {
     // On initialise la carte
-    var mymap = new L.map('mapid').setView([0.0, 0.0], zoom);
+    var map = new L.map('mapid').setView([0.0, 0.0], zoom);
     var marker;
     var polyline;
     var lastLong;
@@ -28,11 +28,14 @@ function init() {
     var lat = 0;
     var lon = 0;
     var positionISS = null;
-    mymap.setView([lat, lon], 13);
+    map.setView([lat, lon], 13);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.outdoors',
+    accessToken: 'pk.eyJ1IjoiYXphcnoiLCJhIjoiY2l5bXNrNXduMDA0MTJ3czcyOW04a2JpNSJ9.woYeTStDyhiL0p3Obd4kqA'
+}).addTo(map);
 
     var ajax = new XMLHttpRequest();
 
@@ -42,7 +45,7 @@ function init() {
 
             //S'il y a déjà un marker, on le retire
             if(marker){
-                mymap.removeLayer(marker);
+                map.removeLayer(marker);
             }
 
             //On met à jour la position de l'ISS
@@ -52,7 +55,7 @@ function init() {
 
             //On ajoute notre marker
             marker = new L.marker([latISS, lonISS], {icon: issIcon});
-            marker.addTo(mymap);
+            marker.addTo(map);
             var latlng = L.latLng(latISS, lonISS);
 
             //Si la polyline est nulle, ou si on change de signe en longitude (aux valeurs fortes, > 100), on l'initailise
@@ -65,11 +68,11 @@ function init() {
             } else{
                 polyline.addLatLng(latlng);
             }
-            polyline.addTo(mymap);
+            polyline.addTo(map);
 
             //On déplace notre caméra le cas échéant
             if(suiviBtn.checked){
-                mymap.setView([latISS, lonISS], zoom);
+                map.setView([latISS, lonISS], zoom);
             }
 
             //On met à jour le texte

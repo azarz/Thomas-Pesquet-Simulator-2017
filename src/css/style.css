@@ -49,4 +49,38 @@ body {
     padding: 5px;
     background-color: rgba(155,200,75,0.8);
     border-radius: 8px;
+    
+    font-family: Verdana;
+}
+
+#tcpDiv {
+    z-index: 500;
+    position: absolute;
+    top: 50%;
+    right: 0.5%;
+    padding: 5px;
+    background-color: rgba(155,200,75,0.8);
+    border-radius: 8px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    
+    font-family: Verdana;
+    font-size: 0.9em;
+}
+
+#tcpDiv p{
+    margin: 0;
+    padding-bottom: 3px;
+}
+
+label {
+    display: block;
+}
+
+#tcpSubmit {
+    margin-top: 13px;
+}
+
+#labelSubmit {
+    text-align: center;
 }

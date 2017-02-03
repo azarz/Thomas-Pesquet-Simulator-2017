@@ -24,15 +24,17 @@ body {
     z-index: 500;
     position: absolute;
     top: 1%;
-    width: 100%;
+    left: 50%;
     text-align: center;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
 }
 
 #latlonspan{
     display: inline-block;
     font-family: Verdana;
     padding: 8px;
-    background-color: rgba(155,200,75,0.8);
+    background-color: rgba(240,240,240,0.8);
     border-radius: 8px;
     box-shadow: 2px 2px 5px grey;
 }
@@ -48,7 +50,7 @@ body {
     top: 1%;
     right: 0.5%;
     padding: 5px;
-    background-color: rgba(155,200,75,0.8);
+    background-color: rgba(240,240,240,0.8);
     border-radius: 8px;
     box-shadow: 2px 2px 5px grey;
     
@@ -67,7 +69,7 @@ body {
     top: 50%;
     right: 0.5%;
     padding: 5px;
-    background-color: rgba(155,200,75,0.8);
+    background-color: rgba(240,240,240,0.8);
     border-radius: 8px;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
@@ -91,12 +93,24 @@ input{
     cursor: pointer;
 }
 
-#tcpSubmit {
-    margin-top: 13px;
-}
-
 #psubmit {
     text-align: center;
+}
+
+#tcpSubmit{
+    margin-top: 13px;
+    background-color: #1b95e0;
+    border: none;
+    color: white;
+    font: normal normal normal 12px/18px 'Helvetica Neue', Arial, sans-serif;
+    border-radius: 4px;
+    
+    background-image: url(../img/twitterIcon.png);
+    background-repeat: no-repeat;
+}
+
+#tcpSubmit:hover{
+    box-shadow: 2px 2px 5px grey;
 }
 
 #tweetDiv {
@@ -104,29 +118,37 @@ input{
     position: absolute;
     bottom: 1%;
     left: 0.5%;
-    padding: 5px;
-    background-color: rgba(155,200,75,0.8);
-    border-radius: 8px;
-
+    background-color: rgba(120,120,120,0.0);
+    padding: 0;
+    margin: 0;
     
     font-family: Verdana;
     font-size: 0.9em;
-    box-shadow: 2px 2px 5px grey;
 }
 
 #tweetDiv span{
     display: block;
 }
 
+#tweetDiv b{
+    font-weight: bold;
+    color: #0084b4;
+}
+
 #closeIcon{
     position: absolute;
-    top: 0.5%;
-    right: 1%;
+    top: 0%;
+    right: 0%;
     cursor: pointer;
+    border: 2px solid black;
+    border-left: none;
+    transform: translate(100%, 80%);
+    -webkit-transform: translate(100%, 80%);
 }
 
 #tweetMsg{
-    width: 196px;
+    padding: 2px;
+    width: 192px;
     margin-top: 17px;
     background-color: white;
     border: 2px solid black;

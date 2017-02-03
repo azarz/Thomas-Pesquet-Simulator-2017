@@ -2,7 +2,7 @@
 
 var timeout = 1000; //période de rafraichissement, en ms
 var zoom = 7;       //niveau de zoom
-var polyColor = 'lightblue'; //couleur de la trace de l'ISS
+var polyColor = 'black'; //couleur de la trace de l'ISS
 
 
 //icone de marker personalisée
@@ -79,7 +79,7 @@ function init() {
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
-        id: 'mapbox.satellite',
+        id: 'mapbox.streets',
         accessToken: 'pk.eyJ1IjoiYXphcnoiLCJhIjoiY2l5bXNrNXduMDA0MTJ3czcyOW04a2JpNSJ9.woYeTStDyhiL0p3Obd4kqA'
     }).addTo(map);
 
@@ -199,7 +199,7 @@ function tweetCP(event){
     var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
 
 
-    //personnalisation du message (nécessite d'avoir un serveur http et de lancer l'application depuis ce serveur)
+    //personnalisation du message (fichier message.json du dossier server que l'on a uploadé)
     var messageRequest= new XMLHttpRequest();
     var beforeLoc;
     var afterLoc;
@@ -237,13 +237,13 @@ function tweetCP(event){
                 country = "Planet";
             }
 
-            // requête pour le message (nécessite d'avoir un serveur http et de lancer l'application depuis ce serveur)
-            messageRequest.open("GET", "http://127.0.0.1/pesquet/messages.json", false);
+            // requête pour le message (fichier message.json du dossier server que l'on a uploadé)
+            messageRequest.open("GET", "https://api.myjson.com/bins/x8f8h", false);
             //envoi de la requête
             messageRequest.send();
 
 
-            var message = beforeLoc + name + ", " + country + afterLoc;
+            var message = beforeLoc + "<b>#" + name + ", " + country + "</b>" + afterLoc;
 
             tweetMsg.innerHTML = message;
 

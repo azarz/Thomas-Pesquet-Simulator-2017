@@ -22,6 +22,8 @@ var latlontxt;   //texte de latitude, longitude
 var suiviBtn;    //bouton pour suivre ou non l'ISS
 var radioZoom;   //Ensemble des boutons radios pour le zoom
 var formTCP;     //forumlaire pour tweeter
+var tweetMsg;    //message du tweet
+var tweetImg;    //image du tweet
 
 
 //éléments cartographiques
@@ -42,8 +44,11 @@ function init() {
     suiviBtn = document.getElementById("cboxSuivi");
     radioZoom = document.getElementsByName("zoom");
     formTCP = document.getElementById("tcpForm");
+    tweetMsg = document.getElementById("tweetMsg");
+    tweetImg = document.getElementById("tweetImg");
 
-    //Mise en place des écouteurs d'évènements pour le zoom
+
+    //Mise en place des écouteurs d'évènements pour le zoom (sur la liste de boutons radio pour pouvoir en ajouter/supprimer facilement)
     for(i=0; i < radioZoom.length; i++){
         radioZoom[i].addEventListener("click", function() {
             setZoom(radioZoom);
@@ -160,12 +165,14 @@ function majAJAX(ajax) {
 //Écouteur pour le changement de zoom
 function setZoom(e){
     for(i = 0; i < e.length; i++){
+        //Si le radioButton est checké, on change le zoom
         if(e[i].checked){
             zoom = e[i].value;
         }
     }
     map.setZoom(zoom);
 }
+
 
 //Écouteur pour la validation du tweet
 function tweetCP(event){
@@ -175,7 +182,37 @@ function tweetCP(event){
     var bearing = Math.random()*360;
     var pitch = Math.random()*60;
 
-    var imgUrl = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/" + lastLong + "," + lastLat + "," + zoom + "," + bearing + "," + pitch + "/600x600?access_token=" + token;
+    var imgUrl = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/" + lastLong + "," + lastLat + "," + zoom + "," + bearing + "," + pitch + "/200x355?access_token=" + token;
 
-    
+    tweetImg.src = imgUrl;
+
+    var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
+
+
+    var placeRequest = new XMLHttpRequest();
+    placeRequest.addEventListener('readystatechange',  function() {
+            //récupération de la position et des noms associés
+            console.log(placeRequest.responseText);
+            var location = JSON.parse(placeRequest.responseText);
+            var name;
+            var country;
+            //Si on trouve un lieu
+            if(location.geonames[0]){
+                name = location.geonames[0].name;
+                country = location.geonames[0].countryName;
+            //Si rien n'est trouvé, on a un nom par défaut
+            } else{
+                name = "World";
+                country = "hello"
+            }
+
+            var message = "Hello " + name + ", " + country;
+
+            tweetMsg.innerHTML = message;
+        });
+
+    // données GET éventuelles de la requête AJAX
+    placeRequest.open("GET", placeUrl, true);
+    // envoi de la requête
+    placeRequest.send();
 }

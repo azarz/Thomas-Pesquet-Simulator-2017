@@ -55,6 +55,12 @@ body {
     font-family: Verdana;
 }
 
+@media (max-width: 690px){
+    #btnSuivi{
+        top: 20%;
+    }
+}
+
 #tcpDiv {
     z-index: 500;
     position: absolute;
@@ -78,12 +84,43 @@ body {
 
 label {
     display: block;
+    cursor: pointer;
+}
+
+input{
+    cursor: pointer;
 }
 
 #tcpSubmit {
     margin-top: 13px;
 }
 
-#labelSubmit {
+#psubmit {
     text-align: center;
+}
+
+#tweetDiv {
+    z-index: 500;
+    position: absolute;
+    bottom: 1%;
+    left: 0.5%;
+    padding: 5px;
+    background-color: rgba(155,200,75,0.8);
+    border-radius: 8px;
+
+    
+    font-family: Verdana;
+    font-size: 0.9em;
+    box-shadow: 2px 2px 5px grey;
+}
+
+#tweetDiv span{
+    display: block;
+}
+
+#closeIcon{
+    position: absolute;
+    top: 0.5%;
+    right: 1%;
+    cursor: pointer;
 }

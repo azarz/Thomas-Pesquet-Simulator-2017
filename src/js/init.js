@@ -17,13 +17,15 @@ var issIcon = L.icon({
 window.onload = init;
 
 
-//éléments HTML
+//éléments HTML du DOM
 var latlontxt;   //texte de latitude, longitude
 var suiviBtn;    //bouton pour suivre ou non l'ISS
 var radioZoom;   //Ensemble des boutons radios pour le zoom
 var formTCP;     //forumlaire pour tweeter
 var tweetMsg;    //message du tweet
 var tweetImg;    //image du tweet
+var tweetDiv;
+var closeIcon;   //icone de fermeture du popup
 
 
 //éléments cartographiques
@@ -46,6 +48,11 @@ function init() {
     formTCP = document.getElementById("tcpForm");
     tweetMsg = document.getElementById("tweetMsg");
     tweetImg = document.getElementById("tweetImg");
+    tweetDiv = document.getElementById("tweetDiv");
+    closeIcon = document.getElementById("closeIcon");
+
+    //On cache le popup de tweet
+    tweetDiv.style.visibility='hidden';
 
 
     //Mise en place des écouteurs d'évènements pour le zoom (sur la liste de boutons radio pour pouvoir en ajouter/supprimer facilement)
@@ -57,6 +64,9 @@ function init() {
 
     //Mise en place de l'écouteur de validation de formulaire
     formTCP.addEventListener('submit', tweetCP, false)
+
+    //Mise en plce de l'écouteur de fermeture de popup
+    closeIcon.addEventListener('click', hidePopup);
 
 
     // On initialise la carte aux coordonnées 0,0
@@ -209,6 +219,8 @@ function tweetCP(event){
             var message = "Hello " + name + ", " + country;
 
             tweetMsg.innerHTML = message;
+
+            tweetDiv.style.visibility='visible';
         });
 
     // données GET éventuelles de la requête AJAX
@@ -216,3 +228,10 @@ function tweetCP(event){
     // envoi de la requête
     placeRequest.send();
 }
+
+
+
+//Écouteur pour la fermeture du popup de tweet
+function hidePopup(){
+    tweetDiv.style.visibility='hidden';
+} 

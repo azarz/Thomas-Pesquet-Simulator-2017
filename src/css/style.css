@@ -8,6 +8,10 @@ body {
     padding: 0;
 }
 
+.leaflet-interactive{
+    cursor: grab;
+}
+
 #container {
     height: 100%;
     width: 100%;

@@ -54,7 +54,6 @@ function init() {
     //On cache le popup de tweet
     tweetDiv.style.visibility='hidden';
 
-
     //Mise en place des écouteurs d'évènements pour le zoom (sur la liste de boutons radio pour pouvoir en ajouter/supprimer facilement)
     for(i=0; i < radioZoom.length; i++){
         radioZoom[i].addEventListener("click", function() {
@@ -74,6 +73,8 @@ function init() {
     lastLong = 0;
     lastLat = 0;
 
+    //initialisation du zoom
+    setZoom(radioZoom);
 
     //Chargement du fond de carte
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {

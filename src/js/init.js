@@ -104,7 +104,7 @@ function init() {
 
 function timeoutUpdateDate(timeOut, req) {
     setTimeout(function () {
-        // données GET éventuelles de la requête AJAX
+        // requête de position de l'ISS
         req.open("GET","http://api.open-notify.org/iss-now.json",true);
         // envoi de la requête
         req.send();
@@ -199,10 +199,31 @@ function tweetCP(event){
     var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
 
 
+    //personnalisation du message (nécessite d'avoir un serveur http et de lancer l'application depuis ce serveur)
+    var messageRequest= new XMLHttpRequest();
+    var beforeLoc;
+    var afterLoc;
+    messageRequest.addEventListener('readystatechange',  function() {
+        // si l'état est le numéro 4 et que la ressource est trouvée
+        if(messageRequest.readyState == 4 && messageRequest.status == 200) {
+            //récupération de la liste de messages possibles
+            var messList = JSON.parse(messageRequest.responseText);
+            //choix aléatoire d'un message
+            var id = Math.random() * messList.length;
+            id = Math.floor(id);
+            var mess = messList[id];
+
+            beforeLoc = mess.before;
+            afterLoc = mess.after;
+        }
+    });
+
+
     var placeRequest = new XMLHttpRequest();
     placeRequest.addEventListener('readystatechange',  function() {
+        // si l'état est le numéro 4 et que la ressource est trouvée
+        if(placeRequest.readyState == 4 && placeRequest.status == 200) {
             //récupération de la position et des noms associés
-            console.log(placeRequest.responseText);
             var location = JSON.parse(placeRequest.responseText);
             var name;
             var country;
@@ -212,18 +233,25 @@ function tweetCP(event){
                 country = location.geonames[0].countryName;
             //Si rien n'est trouvé, on a un nom par défaut
             } else{
-                name = "World";
-                country = "hello"
+                name = "Earth";
+                country = "Planet";
             }
 
-            var message = "Hello " + name + ", " + country;
+            // requête pour le message (nécessite d'avoir un serveur http et de lancer l'application depuis ce serveur)
+            messageRequest.open("GET", "http://127.0.0.1/pesquet/messages.json", false);
+            //envoi de la requête
+            messageRequest.send();
+
+
+            var message = beforeLoc + name + ", " + country + afterLoc;
 
             tweetMsg.innerHTML = message;
 
             tweetDiv.style.visibility='visible';
-        });
+        }
+    });
 
-    // données GET éventuelles de la requête AJAX
+    // requête pour la localisation
     placeRequest.open("GET", placeUrl, true);
     // envoi de la requête
     placeRequest.send();

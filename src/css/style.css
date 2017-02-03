@@ -124,3 +124,11 @@ input{
     right: 1%;
     cursor: pointer;
 }
+
+#tweetMsg{
+    width: 196px;
+    margin-top: 17px;
+    background-color: white;
+    border: 2px solid black;
+    font-family: Consolas;
+}

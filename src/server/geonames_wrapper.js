@@ -1,15 +1,15 @@
-/************** Modules ********************/
+/************ Modules ********************/
 
 var http = require('http');                     // Pour le serveur http
 var fastXmlParser = require('fast-xml-parser'); // Pour parser les string en xml puis en json
 var url = require('url');                       // Pour accéder au serveur par URL
 var querystring = require('querystring');       // Pour parser et formater les requêtes URL
 var express = require('express');               // Pour simplifier l'écriture du code
-var cors = require('cors');                     // Pour pouvoir éviter l'erreur due au Cross Origin Resource Sharing
+var cors = require('cors');                     // Pour pouvoir éviter l'erreur due au Access-Control-Allow-Origin
 
 var app = express();                            
 
-// Activation du CORS
+
 app.use(cors()); 
 
 app.get("/", function (req, res) {
@@ -40,8 +40,8 @@ app.get("/", function (req, res) {
         })
 
     }).on('error', function (e) {
-        console.log('ERROR: ' + e.message);
-        res.write('ERROR: ' + e.message);
+        console.log('problem with request: ' + e.message);
+        res.write('problem with request: ' + e.message);
     });
 });
 

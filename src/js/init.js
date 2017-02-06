@@ -1,9 +1,9 @@
 //************* Variables globales ********************
 
-var timeout = 1000; //période de rafraichissement, en ms
+var timeout = 100000; //période de rafraichissement, en ms
 var zoom = 7;       //niveau de zoom
 var polyColor = 'black'; //couleur de la trace de l'ISS
-
+var wrapperEnabled = true; //utilisation ou non du wrapper d'api pour un positionnement précis
 
 //icone de marker personalisée
 var issIcon = L.icon({
@@ -90,6 +90,11 @@ function init() {
     request.addEventListener('readystatechange',  function() {
             majAJAX(request);
         });
+
+    // requête de position de l'ISS
+    request.open("GET","http://api.open-notify.org/iss-now.json",true);
+    // envoi de la requête
+    request.send();
 
     //Rafraichissement
     timeoutUpdateDate(timeout, request);
@@ -197,8 +202,12 @@ function tweetCP(event){
 
     tweetImg.src = imgUrl;
 
-    var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
 
+    if(wrapperEnabled){
+        var placeUrl = "http://127.0.0.1:8080/?lat=" + lastLat + "&lng=" + lastLong;
+    } else{
+        var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
+    }
 
     //personnalisation du message (fichier message.json du dossier server que l'on a uploadé)
     var messageRequest= new XMLHttpRequest();
@@ -223,15 +232,29 @@ function tweetCP(event){
     var placeRequest = new XMLHttpRequest();
     placeRequest.addEventListener('readystatechange',  function() {
         // si l'état est le numéro 4 et que la ressource est trouvée
+        console.log(placeRequest.readyState);
+        console.log(placeRequest.status);
         if(placeRequest.readyState == 4 && placeRequest.status == 200) {
             //récupération de la position et des noms associés
             var location = JSON.parse(placeRequest.responseText);
             var name;
             var country;
-            //Si on trouve un lieu
-            if(location.geonames[0]){
+            var ocean;
+            //Si on trouve un lieu non océanique
+            if(wrapperEnabled && location.geonames.geoname[0]){
+                length = location.geonames.geoname.length;
+                name = location.geonames.geoname[length - 1].name;
+                country = location.geonames.geoname[length - 1].countryName;
+
+            // Si l'on trouve un océan
+            } else if(wrapperEnabled && location.geonames.ocean){
+                ocean = location.geonames.ocean.name;
+
+            // Si le wrapper n'est pas activé
+            } else if(!wrapperEnabled && location.geonames[0]){
                 name = location.geonames[0].name;
                 country = location.geonames[0].countryName;
+
             //Si rien n'est trouvé, on a un nom par défaut
             } else{
                 name = "Earth";
@@ -244,7 +267,15 @@ function tweetCP(event){
             messageRequest.send();
 
 
-            var message = beforeLoc + "<b>#" + name + ", " + country + "</b>" + afterLoc;
+            //si on est au dessus d'un océan (variable ocean définie), on utilise son nom
+            var message = '';
+            if(ocean){
+                message = beforeLoc + "<b>#" + ocean + "</b>" + afterLoc;
+
+            //Sinon, comportement par défaut
+            }else{
+                message = beforeLoc + "<b>#" + name + ", " + country + "</b>" + afterLoc;
+            }
 
             tweetMsg.innerHTML = message;
 

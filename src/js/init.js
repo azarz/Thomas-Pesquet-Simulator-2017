@@ -37,6 +37,7 @@ var lastLat;    //la dernière latitude connue
 
 
 
+
 /**************** Initialisation de la page *****************************/
 
 function init() {
@@ -241,7 +242,7 @@ function tweetCP(event){
             var country;
             var ocean;
             //Si on trouve un lieu non océanique
-            if(wrapperEnabled && location.geonames.geoname[0]){
+            if(wrapperEnabled && location.geonames.geoname){
                 length = location.geonames.geoname.length;
                 name = location.geonames.geoname[length - 1].name;
                 country = location.geonames.geoname[length - 1].countryName;

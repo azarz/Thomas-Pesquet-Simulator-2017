@@ -54,9 +54,24 @@
                 </div>
 
                 <div id="tweetDiv">
-                        <img  id="closeIcon" src="img/close.png">
+                        <img  id="closeIcon" src="img/close.png" alt="icone de fermeture">
                         <span id="tweetMsg"></span>
-                        <img id="tweetImg">
+                        <img id="tweetImg" src="img/close.png" alt="photo prise par Thomas Pesquet">
+                        <!-- Par défaut, le close.png sert de placeholder pour éviter les problèmes de html -->
+
+                </div>
+
+                <div id="btnLocAPI" class="btn">
+                        <label>
+                                Utiliser l'API de localisation "faite maison"
+                                <input type="checkbox" id="cboxLocAPI" checked="true">
+                        </label>
+                </div>
+                <div id="facteurVitDiv">
+                        <label>
+                                Facteur de vitesse
+                                <input type="number" id="vitTxt" value="1">
+                        </label>
                 </div>
 
         </body>

@@ -158,3 +158,35 @@ input{
     border: 2px solid black;
     font-family: Consolas;
 }
+
+#btnLocAPI {
+    z-index: 500;
+    position: absolute;
+    top: 50%;
+    left: 0.5%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    padding: 5px;
+    background-color: rgba(240,240,240,0.8);
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px grey;
+    
+    font-family: Verdana;
+    font-size: 0.9em;
+}
+
+#facteurVitDiv {
+    z-index: 500;
+    position: absolute;
+    top: 50%;
+    left: 3%;
+    transform: translateY(70%);
+    -webkit-transform: translateY(70%);
+    padding: 5px;
+    background-color: rgba(240,240,240,0.8);
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px grey;
+    
+    font-family: Verdana;
+    font-size: 0.9em;
+}

@@ -1,9 +1,11 @@
 //************* Variables globales ********************
 
-var timeout = 100000; //période de rafraichissement, en ms
-var zoom = 7;       //niveau de zoom
-var polyColor = 'black'; //couleur de la trace de l'ISS
-var wrapperEnabled = true; //utilisation ou non du wrapper d'api pour un positionnement précis
+var timeout = 1000;         //période de rafraichissement, en ms
+var zoom = 7;               //niveau de zoom
+var polyColor = 'black';    //couleur de la trace de l'ISS
+var wrapperEnabled = true;  //utilisation ou non du wrapper d'api pour un positionnement précis
+var use_debug_loc = true;   //utilisaton de l'API de localisation personalisée
+
 
 //icone de marker personalisée
 var issIcon = L.icon({
@@ -24,8 +26,11 @@ var radioZoom;   //Ensemble des boutons radios pour le zoom
 var formTCP;     //forumlaire pour tweeter
 var tweetMsg;    //message du tweet
 var tweetImg;    //image du tweet
-var tweetDiv;
+var tweetDiv;    //div du tweet
 var closeIcon;   //icone de fermeture du popup
+var locBtn;      //bouton pour utiliser ou non l'API de localisation maison
+var vitTxt;      //texte du facteur de vitesse pour l'API maison
+var factVitDiv;  //div du facteur de vitesse
 
 
 //éléments cartographiques
@@ -51,10 +56,15 @@ function init() {
     tweetImg = document.getElementById("tweetImg");
     tweetDiv = document.getElementById("tweetDiv");
     closeIcon = document.getElementById("closeIcon");
+    locBtn = document.getElementById("cboxLocAPI");
+    vitTxt = document.getElementById("vitTxt");
+    factVitDiv = document.getElementById("facteurVitDiv");
 
     //On cache le popup de tweet
-    tweetDiv.style.visibility='hidden';
+    tweetDiv.style.visibility = "hidden";
 
+
+    //**** Ecouteurs d'évènements
     //Mise en place des écouteurs d'évènements pour le zoom (sur la liste de boutons radio pour pouvoir en ajouter/supprimer facilement)
     for(i=0; i < radioZoom.length; i++){
         radioZoom[i].addEventListener("click", function() {
@@ -63,10 +73,13 @@ function init() {
     }
 
     //Mise en place de l'écouteur de validation de formulaire
-    formTCP.addEventListener('submit', tweetCP, false)
+    formTCP.addEventListener('submit', tweetCP, false);
 
-    //Mise en plce de l'écouteur de fermeture de popup
+    //Mise en place de l'écouteur de fermeture de popup
     closeIcon.addEventListener('click', hidePopup);
+
+    //Mise en place de l'écouteur de changement d'API de loalisation
+    locBtn.addEventListener('click', changeLocAPI);
 
 
     // On initialise la carte aux coordonnées 0,0
@@ -76,6 +89,10 @@ function init() {
 
     //initialisation du zoom
     setZoom(radioZoom);
+
+    //initialisation de l'utilisetion de l'API de localisation
+    changeLocAPI();
+
 
     //Chargement du fond de carte
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -92,10 +109,8 @@ function init() {
             majAJAX(request);
         });
 
-    // requête de position de l'ISS
-    request.open("GET","http://api.open-notify.org/iss-now.json",true);
-    // envoi de la requête
-    request.send();
+    // première requête de position de l'ISS
+    getISSPosition(request, true);
 
     //Rafraichissement
     timeoutUpdateDate(timeout, request);
@@ -104,6 +119,25 @@ function init() {
 
 
 
+/************* Appel de l'API de localisation **********************/
+function getISSPosition(xhr, first_co){
+
+    // Si l'on utilise le service en ligne
+    if (!use_debug_loc){
+        // requête de position de l'ISS
+        xhr.open("GET","http://api.open-notify.org/iss-now.json", true);
+
+    //Si l'on utilise l'API locale
+    } else {
+        // requête de position de l'ISS
+        // De manière synchrone car sinon, un redémarrage du serveur alors qu'une page a envoyé des requêtes empêche le serveur de fonctionner
+        xhr.open("GET","http://127.0.0.1:8000/?f_vitesse=" + vitTxt.value + "&first_co=" + first_co, false);
+    }
+
+    // envoi de la requête
+    xhr.send();
+}
+
 
 
 
@@ -111,10 +145,7 @@ function init() {
 
 function timeoutUpdateDate(timeOut, req) {
     setTimeout(function () {
-        // requête de position de l'ISS
-        req.open("GET","http://api.open-notify.org/iss-now.json",true);
-        // envoi de la requête
-        req.send();
+        getISSPosition(req, '');
         timeoutUpdateDate(timeOut, req);
     }, timeOut);
 }
@@ -126,47 +157,47 @@ function timeoutUpdateDate(timeOut, req) {
 /**************** Fonction de mise à jour de la position de l'ISS *****************************/
 
 function majAJAX(ajax) {
-        // si l'état est le numéro 4 et que la ressource est trouvée
-        if(ajax.readyState == 4 && ajax.status == 200) {
+    // si l'état est le numéro 4 et que la ressource est trouvée
+    if(ajax.readyState == 4 && ajax.status == 200) {
 
-            //S'il y a déjà un marker, on le retire
-            if(marker){
-                map.removeLayer(marker);
-            }
-
-            //On met à jour la position de l'ISS
-            var positionISS = JSON.parse(ajax.responseText);
-            var latISS = positionISS.iss_position.latitude;
-            var lonISS = positionISS.iss_position.longitude;
-
-            //On ajoute notre marker
-            marker = new L.marker([latISS, lonISS], {icon: issIcon});
-            marker.addTo(map);
-            var latlng = L.latLng(latISS, lonISS);
-
-            //Si la polyline est nulle, ou si on change de signe en longitude (aux valeurs fortes, > 100), on l'initailise
-            if(!polyline || (lastLong && (Math.sign(lastLong) != Math.sign(lonISS)) && Math.abs(lonISS) > 100)){
-                polyline = new L.polyline(latlng, {color: polyColor});
-                polyline.addTo(map);
-
-            //Sinon, on lui ajoute la dernière position
-            } else{
-                polyline.addLatLng(latlng);
-            }
-
-            //On déplace notre caméra le cas échéant
-            if(suiviBtn.checked){
-                map.setView([latISS, lonISS], zoom);
-            }
-
-            //On met à jour le texte
-            latlontxt.innerHTML = latISS + ", " + lonISS;
-
-            //on stocke la dernière latitude et longitude
-            lastLat = latISS;
-            lastLong = lonISS;
+        //S'il y a déjà un marker, on le retire
+        if(marker){
+            map.removeLayer(marker);
         }
+
+        //On met à jour la position de l'ISS
+        var positionISS = JSON.parse(ajax.responseText);
+        var latISS = positionISS.iss_position.latitude;
+        var lonISS = positionISS.iss_position.longitude;
+
+        //On ajoute notre marker
+        marker = new L.marker([latISS, lonISS], {icon: issIcon});
+        marker.addTo(map);
+        var latlng = L.latLng(latISS, lonISS);
+
+        //Si la polyline est nulle, ou si on change de signe en longitude (aux valeurs fortes, > 100), on l'initailise
+        if(!polyline || (lastLong && (Math.sign(lastLong) != Math.sign(lonISS)) && Math.abs(lonISS) > 100)){
+            polyline = new L.polyline(latlng, {color: polyColor});
+            polyline.addTo(map);
+
+        //Sinon, on lui ajoute la dernière position
+        } else{
+            polyline.addLatLng(latlng);
+        }
+
+        //On déplace notre caméra le cas échéant
+        if(suiviBtn.checked){
+            map.setView([latISS, lonISS], zoom);
+        }
+
+        //On met à jour le texte
+        latlontxt.innerHTML = latISS + ", " + lonISS;
+
+        //on stocke la dernière latitude et longitude
+        lastLat = latISS;
+        lastLong = lonISS;
     }
+}
 
 
 
@@ -262,8 +293,8 @@ function tweetCP(event){
                 country = "Planet";
             }
 
-            // requête pour le message (fichier message.json du dossier server que l'on a uploadé)
-            messageRequest.open("GET", "https://api.myjson.com/bins/x8f8h", false);
+            // requête pour le message (fichier message.json du dossier server que l'on a télécerrsé sur le site myjson.com)
+            messageRequest.open("GET", "https://api.myjson.com/bins/x8f8h", false);   // De manière synchone car on a absolument besoin des variables plus tard
             //envoi de la requête
             messageRequest.send();
 
@@ -280,7 +311,7 @@ function tweetCP(event){
 
             tweetMsg.innerHTML = message;
 
-            tweetDiv.style.visibility='visible';
+            tweetDiv.style.visibility = "visible";
         }
     });
 
@@ -294,5 +325,26 @@ function tweetCP(event){
 
 //Écouteur pour la fermeture du popup de tweet
 function hidePopup(){
-    tweetDiv.style.visibility='hidden';
+    tweetDiv.style.visibility = "hidden";
 } 
+
+
+//Écouteur pour le changement d'API de localisation
+function changeLocAPI(){
+
+    use_debug_loc = locBtn.checked;
+
+    // Changement de la couleur de la polyligne
+    if(locBtn.checked){
+        polyColor = 'red';
+        factVitDiv.style.visibility = "visible";
+    } else{
+        polyColor = 'black';
+        factVitDiv.style.visibility = "hidden";
+    }
+
+    // Création d'une nouvelle polyligne
+    var lastLatlng = L.latLng(lastLat, lastLong);
+    polyline = new L.polyline(lastLatlng, {color: polyColor});
+    polyline.addTo(map);
+}

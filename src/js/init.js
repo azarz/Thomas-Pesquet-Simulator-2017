@@ -264,8 +264,6 @@ function tweetCP(event){
     var placeRequest = new XMLHttpRequest();
     placeRequest.addEventListener('readystatechange',  function() {
         // si l'état est le numéro 4 et que la ressource est trouvée
-        console.log(placeRequest.readyState);
-        console.log(placeRequest.status);
         if(placeRequest.readyState == 4 && placeRequest.status == 200) {
             //récupération de la position et des noms associés
             var location = JSON.parse(placeRequest.responseText);
@@ -294,7 +292,7 @@ function tweetCP(event){
             }
 
             // requête pour le message (fichier message.json du dossier server que l'on a télécerrsé sur le site myjson.com)
-            messageRequest.open("GET", "https://api.myjson.com/bins/x8f8h", false);   // De manière synchone car on a absolument besoin des variables plus tard
+            messageRequest.open("GET", "server/messages.json", false);   // De manière synchone car on a absolument besoin des variables plus tard
             //envoi de la requête
             messageRequest.send();
 

@@ -70,7 +70,7 @@ body {
 #tcpDiv {
     z-index: 500;
     position: absolute;
-    top: 50%;
+    top: 40%;
     right: 0.5%;
     padding: 5px;
     background-color: rgba(240,240,240,0.8);
@@ -162,8 +162,8 @@ input{
 #btnLocAPI {
     z-index: 500;
     position: absolute;
-    top: 50%;
-    left: 0.5%;
+    top: 60%;
+    right: 0.5%;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
     padding: 5px;
@@ -178,10 +178,10 @@ input{
 #facteurVitDiv {
     z-index: 500;
     position: absolute;
-    top: 50%;
-    left: 3%;
-    transform: translateY(70%);
-    -webkit-transform: translateY(70%);
+    top: 60%;
+    right: 36px;
+    transform: translateY(65%);
+    -webkit-transform: translateY(65%);
     padding: 5px;
     background-color: rgba(240,240,240,0.8);
     border-radius: 8px;
@@ -189,4 +189,17 @@ input{
     
     font-family: Verdana;
     font-size: 0.9em;
+}
+
+
+@media (max-height: 420px){
+    #btnLocAPI {
+        top: 65%;
+    }
+    #facteurVitDiv {
+        top: 65%;
+    }
+    #tcpDiv{
+        top: 35%;
+    }
 }

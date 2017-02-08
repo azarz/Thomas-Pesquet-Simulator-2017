@@ -2,8 +2,6 @@
 
 Mini-projet web IT2 de Terry Moreau et Amaury Zarzelli
 
-### Présentation
-
 Simulateur réaliste des sensations d'un spationaute français dans la Station Spatiale Internationale.
 
 ## Comment utiliser ?

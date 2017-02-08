@@ -1,4 +1,4 @@
-# Thomas-Pesquet-Simulator-2017
+# Thomas Pesquet Simulator 2017
 
 Mini-projet web IT2 de Terry Moreau et Amaury Zarzelli
 

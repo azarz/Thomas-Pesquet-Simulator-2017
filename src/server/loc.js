@@ -67,8 +67,6 @@ app.get('/', function (req, res) {
 
 
 
-app.use(cors()); 
-
 // On utilise le port 8000
 app.listen(8000);
 

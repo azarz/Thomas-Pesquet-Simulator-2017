@@ -61,11 +61,6 @@ body {
     font-family: Verdana;
 }
 
-@media (max-width: 690px){
-    #btnSuivi{
-        top: 20%;
-    }
-}
 
 #tcpDiv {
     z-index: 500;
@@ -191,8 +186,14 @@ input{
     font-size: 0.9em;
 }
 
+@media (max-width: 690px){
+    #btnSuivi{
+        top: 20%;
+    }
+}
 
-@media (max-height: 420px){
+
+@media (max-height: 460px){
     #btnLocAPI {
         top: 65%;
     }
@@ -201,5 +202,59 @@ input{
     }
     #tcpDiv{
         top: 35%;
+    }
+}
+
+@media (max-height: 320px){
+    #btnLocAPI {
+        top: 75%;
+    }
+    #facteurVitDiv {
+        top: 75%;
+    }
+    #tcpDiv{
+        top: 40%;
+    }
+}
+
+@media (max-height: 490px){
+    #tweetDiv{
+        height: 70vh;
+        font-size: 0.7em;
+    }
+    #tweetMsg {
+        width: 26.5vh;
+    }
+    #tweetImg{
+        height: 50vh;
+    }    
+}
+
+@media (max-width: 540px){
+    #tweetDiv{
+        width: 30vw;
+    }
+    #tweetMsg {
+        width: auto;
+    }
+    #tweetImg{
+        width: 30vw;
+    }
+}
+
+@media (max-width: 470px){
+    #btnLocAPI{
+        width: 30vw;
+    }
+    #facteurVitDiv{
+        width: 30vw;
+        transform: translateY(80%);
+        -webkit-transform: translateY(80%);
+    }
+    #vitTxt{
+        width: 25vw;
+    }
+    #tweetDiv{
+        font-size: 0.7em;
     }
 }

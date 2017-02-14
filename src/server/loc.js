@@ -84,10 +84,13 @@ function firstCo(){
 
 // Connexions suivantes
 function connect(factVitesse){
+
+	// Récupération de la date, calcul du deltaT en ms
 	date = new Date();
 	var deltaT = date.getTime() - lastTime;
 	lastTime = date.getTime();
 
+	// Calcul de la variation de distance en mètres par deltaD = vitesse * deltaT
 	var deltaD = factVitesse * vitISS * (deltaT/1000);
 	var deltaAzimuth = deltaD/radius;
 
@@ -128,7 +131,7 @@ function connect(factVitesse){
 
 function rotate(x, y, z, axis, angle){
 	/**
-	Rotation 3D d'un vecteur x, y, z autour d'un axe (axis) selon on angle
+	Rotation 3D d'un vecteur x, y, z autour d'un axe (axis) selon un angle
 	*/
 	var ux = axis[0];
 	var uy = axis[1];

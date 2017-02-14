@@ -224,24 +224,29 @@ function setZoom(e){
 
 //Écouteur pour la validation du tweet
 function tweetCP(event){
+
+    // On empêche le comportement par défaut
     event.preventDefault();
 
+    // Paramètres de l'image aérienne : token = clef d'accès, bearing et pitch : angles de rotation de l'image
     var token = 'pk.eyJ1IjoiYXphcnoiLCJhIjoiY2l5bXNrNXduMDA0MTJ3czcyOW04a2JpNSJ9.woYeTStDyhiL0p3Obd4kqA';
     var bearing = Math.random()*360;
     var pitch = Math.random()*60;
 
+    // Construction de l'URL
     var imgUrl = "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/" + lastLong + "," + lastLat + "," + zoom + "," + bearing + "," + pitch + "/200x355?access_token=" + token;
 
+    // On charge l'image dans le HTML
     tweetImg.src = imgUrl;
 
-
+    // On utilise le wrapper ou non en fonction des paramètres
     if(wrapperEnabled){
         var placeUrl = "http://127.0.0.1:8080/?lat=" + lastLat + "&lng=" + lastLong;
     } else{
         var placeUrl = "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + lastLat + "&lng=" + lastLong + "&username=azarz";
     }
 
-    //personnalisation du message (fichier message.json du dossier server que l'on a uploadé)
+    // Personnalisation du message (fichier messages.json du dossier server)
     var messageRequest= new XMLHttpRequest();
     var beforeLoc;
     var afterLoc;
@@ -261,6 +266,7 @@ function tweetCP(event){
     });
 
 
+    // Requête pour le nom du lieu proche
     var placeRequest = new XMLHttpRequest();
     placeRequest.addEventListener('readystatechange',  function() {
         // si l'état est le numéro 4 et que la ressource est trouvée
@@ -291,8 +297,8 @@ function tweetCP(event){
                 country = "Planet";
             }
 
-            // requête pour le message (fichier message.json du dossier server que l'on a télécerrsé sur le site myjson.com)
-            messageRequest.open("GET", "server/messages.json", false);   // De manière synchone car on a absolument besoin des variables plus tard
+            // requête pour le message (fichier messages.json du dossier server)
+            messageRequest.open("GET", "server/messages.json", false);   // De manière synchone car on se sert du résultat ensuite
             //envoi de la requête
             messageRequest.send();
 
@@ -307,8 +313,10 @@ function tweetCP(event){
                 message = beforeLoc + "<b>#" + name + ", " + country + "</b>" + afterLoc;
             }
 
+            // On charge le message dans le HTML
             tweetMsg.innerHTML = message;
 
+            // On affiche le tweet
             tweetDiv.style.visibility = "visible";
         }
     });

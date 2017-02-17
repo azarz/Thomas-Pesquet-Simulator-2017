@@ -175,15 +175,14 @@ function majAJAX(ajax) {
         marker.addTo(map);
         var latlng = L.latLng(latISS, lonISS);
 
-        //Si la polyline est nulle, ou si on change de signe en longitude (aux valeurs fortes, > 100), on l'initailise
-        if(!polyline || (lastLong && (Math.sign(lastLong) != Math.sign(lonISS)) && Math.abs(lonISS) > 100)){
+        //Si la polyline est n'xiste pas, ou si on change de signe en longitude (aux valeurs fortes, > 150), on l'initailise
+        if(!polyline || (lastLong && (Math.sign(lastLong) != Math.sign(lonISS)) && Math.abs(lonISS) > 150)){
             polyline = new L.polyline(latlng, {color: polyColor});
             polyline.addTo(map);
-
-        //Sinon, on lui ajoute la dernière position
-        } else{
-            polyline.addLatLng(latlng);
         }
+
+        //On lui ajoute la dernière position
+        polyline.addLatLng(latlng);
 
         //On déplace notre caméra le cas échéant
         if(suiviBtn.checked){
@@ -351,6 +350,5 @@ function changeLocAPI(){
 
     // Création d'une nouvelle polyligne
     var lastLatlng = L.latLng(lastLat, lastLong);
-    polyline = new L.polyline(lastLatlng, {color: polyColor});
-    polyline.addTo(map);
+    polyline = null;
 }

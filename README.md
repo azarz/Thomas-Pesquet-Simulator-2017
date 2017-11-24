@@ -1,6 +1,6 @@
 # Thomas Pesquet Simulator 2017
 
-Mini-projet web IT2 de Terry Moreau et Amaury Zarzelli
+Mini-projet web IT2
 
 Simulateur réaliste des sensations d'un spationaute français dans la Station Spatiale Internationale.
 

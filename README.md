@@ -9,11 +9,11 @@ Simulateur réaliste des sensations d'un spationaute français dans la Station S
 Avoir Node.js installé sur sa machine est nécessaire.
 Utiliser un navigateur compatible avec HTML5 (normalement cela ne devrait pas poser problème).
 
-### Windows
+### Windows et Linux
 
-+ Lancer le ficher launch_server.bat situé dans la racine. Cela a pour effet de lancer les 2 services Node.js utiles au fonctionnment de la page.
++ Lancer le ficher launch_server.bat (Windows) ou launch_server.sh (Linux) situé dans la racine. Cela a pour effet de lancer les 2 services Node.js utiles au fonctionnment de la page.
 
-+ Ouvrir la page html nommé index.html dans le dossier src. Cela fonctionne en local (mode fichier), car seul des applications JavaScript locales sont utilisées, mais il est toujours préférable d'utiliser un serveur http local (EasyPHP par exemple)
++ Ouvrir la page html nommé index.html dans le dossier src. Cela fonctionne en local (mode fichier), car seules des applications JavaScript locales sont utilisées, mais il est toujours préférable d'utiliser un serveur http local (WAMP ou LAMP par exemple)
 
 + Dans la page, vous pouvez utiliser ou non la localisation simulée, permettant d'obtenir une vitesse de l'ISS personalisée (bouton "Utiliser l'API de localisation faite maison". Sinon, la position réelle de l'ISS sera utilisée.
 

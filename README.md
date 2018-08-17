@@ -4,6 +4,8 @@ Mini-projet web IT2
 
 Simulateur réaliste des sensations d'un spationaute français dans la Station Spatiale Internationale.
 
+![capture](capture.png "capture")
+
 ## Comment utiliser ?
 
 Avoir Node.js installé sur sa machine est nécessaire.

@@ -1,2 +1,2 @@
 cd src/server
-node geonames_wrapper.js & node loc.js &
+nodejs geonames_wrapper.js & nodejs loc.js &

@@ -11,9 +11,9 @@ Simulateur réaliste des sensations d'un spationaute français dans la Station S
 Avoir Node.js installé sur sa machine est nécessaire.
 Utiliser un navigateur compatible avec HTML5 (normalement cela ne devrait pas poser problème).
 
-### Windows et Linux
+### Windows et Debian/Ubuntu
 
-+ Lancer le ficher launch_server.bat (Windows) ou launch_server.sh (Linux) situé dans la racine. Cela a pour effet de lancer les 2 services Node.js utiles au fonctionnment de la page.
++ Lancer le ficher launch_server.bat (Windows) ou launch_server.sh (Debian/Ubuntu) situé dans la racine. Cela a pour effet de lancer les 2 services Node.js utiles au fonctionnment de la page.
 
 + Ouvrir la page html nommé index.html dans le dossier src. Cela fonctionne en local (mode fichier), car seules des applications JavaScript locales sont utilisées, mais il est toujours préférable d'utiliser un serveur http local (WAMP ou LAMP par exemple)
 
